@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xp-node-graphql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xp-node-graphql
+  template:
+    metadata:
+      labels:
+        app: xp-node-graphql
+    spec:
+      containers:
+      - name: xp-node-graphql
+        image: xp-node-graphql
+        ports:
+        - containerPort: 3000
+        env:
+        - name: MONGO_URI
+          valueFrom:
+            secretKeyRef:
+              name: dev-secrets
+              key: MONGO_URI
