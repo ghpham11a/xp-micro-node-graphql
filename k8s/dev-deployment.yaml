@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: xp-micro-node-graphql
-        image: xp-micro-node-graphql
+        image: xp-micro-node-graphql:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 3000
         env:

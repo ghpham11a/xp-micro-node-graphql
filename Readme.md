@@ -52,10 +52,64 @@ kubectl get svc xp-micro-node-graphql-mongodb
 kubectl run --namespace default xp-micro-node-graphql-mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=$MONGODB_ROOT_PASSWORD" --image docker.io/bitnami/mongodb:8.0.3-debian-12-r0 --command -- bash
 ```
 
+## Converting strings
+
+```sh
+[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes('secret-value'))
+
+[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes('mongodb://mongodb-username:mongodb-password@xp-micro-node-graphql-mongodb.default.svc.cluster.local:27017/mongodb-database'))
+
+[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('encoded-value'))
+```
+
 ## Connect to admin inside MongoDB client inside pod
 
 ```sh
-mongosh --host '10.102.124.38' -u 'mongodb' -p 'mongodb' --authenticationDatabase 'mongodb'
+mongosh --host '10.110.221.154' -u 'mongodb' -p 'mongodb' --authenticationDatabase 'mongodb'
+```
+
+## Insert data through mongosh
+
+```sh
+use mongodb
+```
+
+```sh
+db.runCommand({connectionStatus:1})
+```
+
+```sh
+# 3. Insert a single document
+db.users.insertOne({ username: "john_doe", email: "john@example.com" })
+
+# 4. Insert multiple documents
+db.users.insertMany([
+  { username: "jane_doe",  email: "jane@example.com" },
+  { username: "alex_smith", email: "alex@example.com" }
+])
+```
+
+## Read data through mongosh
+
+```sh
+db.users.find().pretty()
+```
+
+```sh
+[
+  {
+    _id: ObjectId('67be9f544896e7d362fe6911'),
+    id: 1,
+    name: 'alpha',
+    email: 'bravo'
+  },
+  {
+    _id: ObjectId('67be9f7e4896e7d362fe6912'),
+    id: 2,
+    name: 'charlie',
+    email: 'delta'
+  }
+]
 ```
 
 ## Delete resoruces
@@ -65,4 +119,10 @@ kubectl delete service xp-flask-service
 kubectl delete deployment xp-flask-deployment
 kubectl delete secrets dev-secrets
 kubectl delete pvc xp-mongodb
+```
+
+### POST request to GraphQL endpoint (http://localhost:3000/graphql)
+
+```sh
+{ "query": "{ getUser(id: \"67be9f544896e7d362fe6911\") { id name email } }" }
 ```

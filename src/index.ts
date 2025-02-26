@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import { graphqlHTTP } from 'express-graphql';
 import { schema } from './schema';
 import { root } from './resolvers';
+import './db';
 
 dotenv.config();
 
