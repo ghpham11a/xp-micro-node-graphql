@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: xp-node-graphql
+  name: xp-micro-node-graphql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: xp-node-graphql
+      app: xp-micro-node-graphql
   template:
     metadata:
       labels:
-        app: xp-node-graphql
+        app: xp-micro-node-graphql
     spec:
       containers:
-      - name: xp-node-graphql
-        image: xp-node-graphql
+      - name: xp-micro-node-graphql
+        image: xp-micro-node-graphql
         ports:
         - containerPort: 3000
         env:
