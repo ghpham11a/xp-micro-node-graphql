@@ -13,7 +13,7 @@ docker build -t xp-node-graphql .
 ## Run the Docker container
 
 ```sh
-docker run -p 3000:3000 xp-micro-node-graphql
+docker run -p 3000:3000 xp-node-graphql-mongo
 ```
 
 ## List Docker containers
@@ -31,13 +31,13 @@ helm repo update
 ## Install MongoDB Helm chart with custom values
 
 ```sh
-helm install xp-micro-node-graphql-mongodb -f dev-mongodb-values.yaml oci://registry-1.docker.io/bitnamicharts/mongodb
+helm install xp-node-graphql-mongo-mongodb -f dev-mongodb-values.yaml oci://registry-1.docker.io/bitnamicharts/mongodb
 ```
 
 ## Delete Helm chart
 
 ```sh
-helm uninstall xp-micro-node-graphql-mongodb
+helm uninstall xp-node-graphql-mongo-mongodb
 ```
 
 ## Connect to DB
@@ -45,11 +45,11 @@ helm uninstall xp-micro-node-graphql-mongodb
 To retrieve the MongoDB root password from the Kubernetes secret and set it as an environment variable, run the following command:
 
 ```sh
-$MONGODB_ROOT_PASSWORD = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String((kubectl get secret --namespace default xp-micro-node-graphql-mongodb -o jsonpath="{.data.mongodb-root-password}")))
+$MONGODB_ROOT_PASSWORD = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String((kubectl get secret --namespace default xp-node-graphql-mongo-mongodb -o jsonpath="{.data.mongodb-root-password}")))
 
-kubectl get svc xp-micro-node-graphql-mongodb
+kubectl get svc xp-node-graphql-mongo-mongodb
 
-kubectl run --namespace default xp-micro-node-graphql-mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=$MONGODB_ROOT_PASSWORD" --image docker.io/bitnami/mongodb:8.0.3-debian-12-r0 --command -- bash
+kubectl run --namespace default xp-node-graphql-mongo-mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=$MONGODB_ROOT_PASSWORD" --image docker.io/bitnami/mongodb:8.0.3-debian-12-r0 --command -- bash
 ```
 
 ## Converting strings
@@ -57,7 +57,7 @@ kubectl run --namespace default xp-micro-node-graphql-mongodb-client --rm --tty 
 ```sh
 [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes('secret-value'))
 
-[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes('mongodb://mongodb-username:mongodb-password@xp-micro-node-graphql-mongodb.default.svc.cluster.local:27017/mongodb-database'))
+[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes('mongodb://mongodb-username:mongodb-password@xp-node-graphql-mongo-mongodb.default.svc.cluster.local:27017/mongodb-database'))
 
 [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('encoded-value'))
 ```
@@ -117,7 +117,7 @@ db.users.find().pretty()
 ```sh
 kubectl delete service xp-flask-service
 kubectl delete deployment xp-flask-deployment
-kubectl delete secrets dev-secrets
+kubectl delete secrets xp-node-graphql-mongo-secrets
 kubectl delete pvc xp-mongodb
 ```
 

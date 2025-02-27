@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: xp-micro-node-graphql
+  name: xp-node-graphql-mongo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: xp-micro-node-graphql
+      app: xp-node-graphql-mongo
   template:
     metadata:
       labels:
-        app: xp-micro-node-graphql
+        app: xp-node-graphql-mongo
     spec:
       containers:
-      - name: xp-micro-node-graphql
-        image: xp-micro-node-graphql:latest
+      - name: xp-node-graphql-mongo
+        image: xp-node-graphql-mongo:latest
         imagePullPolicy: Never
         ports:
         - containerPort: 3000
@@ -22,5 +22,5 @@ spec:
         - name: MONGO_URI
           valueFrom:
             secretKeyRef:
-              name: dev-secrets
+              name: xp-node-graphql-mongo-secrets
               key: MONGO_URI

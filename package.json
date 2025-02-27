@@ -1,5 +1,5 @@
 {
-  "name": "xp-node-graphql",
+  "name": "xp-node-graphql-mongo",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
